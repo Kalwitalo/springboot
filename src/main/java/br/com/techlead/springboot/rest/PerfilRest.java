@@ -13,7 +13,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("perfils") // Nome do resource
-@Api(value = "Perfil", description = "Perfil Descrição", ) // Swagger
+@Api(value = "Perfil", description = "Perfil Descrição") // Swagger
 public class PerfilRest {
 
     @Autowired
