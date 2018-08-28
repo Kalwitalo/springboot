@@ -1,7 +1,8 @@
 package br.com.techlead.springboot.service;
 
-import br.com.techlead.springboot.model.Perfil;
-import br.com.techlead.springboot.repository.PerfilRepository;
+import br.com.techlead.springboot.model.Jogador;
+import br.com.techlead.springboot.model.Time;
+import br.com.techlead.springboot.repository.TimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,42 +10,42 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 
 @Service
-public class PerfilService implements IPerfilService {
+public class TimeService implements ITimeService {
 
     @Autowired
-    private PerfilRepository perfilRepository;
+    private TimeRepository timeRepository;
 
     @Transactional(readOnly = true) //Atribui como transacional para caso de algum problema ele faça o rollback
-    public Collection<Perfil> buscarTodos() {
-        return perfilRepository.findAll();
+    public Collection<Time> buscarTodos() {
+        return timeRepository.findAll();
     }
 
     @Transactional(readOnly = true) //Atribui como transacional para caso de algum problema ele faça o rollback
-    public Perfil buscarPorId(Integer id) {
-        return perfilRepository.findById(id).orElse(null);
+    public Time buscarPorId(Integer id) {
+        return timeRepository.findById(id).orElse(null);
     }
 
     @Transactional //Atribui como transacional para caso de algum problema ele faça o rollback
-    public Perfil salvar(Perfil perfil) {
-        return perfilRepository.save(perfil);
+    public Time salvar(Time time) {
+        return timeRepository.save(time);
     }
 
     @Transactional //Atribui como transacional para caso de algum problema ele faça o rollback
-    public Perfil editar(Perfil perfil) {
-        Collection<Perfil> Perfils = buscarTodos();
-        for (Perfil p : Perfils) {
-            if (p.getId().equals(perfil.getId())) {
-                return perfilRepository.save(perfil);
-            }
+    public Time editar(Time time) {
+        Time timeBase = buscarPorId(time.getId());
+        if (timeBase != null) {
+            timeRepository.save(time);
+            return time;
         }
         return null;
+
     }
 
     @Transactional //Atribui como transacional para caso de algum problema ele faça o rollback
     public Integer excluir(Integer id) {
-        Perfil perfil = buscarPorId(id);
-        if (perfil != null) {
-            perfilRepository.delete(perfil);
+        Time time = buscarPorId(id);
+        if (time != null) {
+            timeRepository.delete(time);
             return id;
         }
         return null;
